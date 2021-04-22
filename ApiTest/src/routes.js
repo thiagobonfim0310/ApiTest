@@ -2,9 +2,28 @@ const { json } = require('body-parser')
 const routes = require('express').Router()
 const csv = require('./makeCSV')
 const msg = "oii"
+const serialport = require('serialport')
 
 var obj= []
 
+const port = new serialport(
+    'COM9',
+    {baudRate: 9600}
+)
+
+const parser = new serialport.parsers.Readline()
+
+port.pipe(parser)
+
+parser.on('data', (data)=> {
+    console.log(data)
+    if(data  != '\r'){
+        let formatData = data.split('\x01\00')
+        let splitData = formatData[1].split("|")
+        
+            console.log(splitData)
+    }
+})
 
 routes.post('/colection',(req, res) =>{
     
@@ -42,7 +61,7 @@ routes.get('/download', async(req, res) =>{
     csv('Test', obj)
 
     console.log('ok')
-    res.download('Test.csv', (err)=>{
+    res.download('Test.txt', (err)=>{
 
         console.log(err);
     
