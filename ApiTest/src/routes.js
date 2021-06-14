@@ -6,24 +6,27 @@ const serialport = require('serialport')
 
 var obj= []
 
-const port = new serialport(
-    'COM9',
-    {baudRate: 9600}
-)
+// const port = new serialport(
+//     'COM9',
+//     {baudRate: 9600}
+// )
 
-const parser = new serialport.parsers.Readline()
+// const parser = new serialport.parsers.Readline()
 
-port.pipe(parser)
+// port.pipe(parser)
 
-parser.on('data', (data)=> {
-    console.log(data)
-    if(data  != '\r'){
-        let formatData = data.split('\x01\00')
-        let splitData = formatData[1].split("|")
+// parser.on('data', (data)=> {
+//     console.log(data)
+//     if(data  != '\r'){
+//         // let formatData = data.split('\x01\00')
+//         // let splitData = formatData[1].split("|")
+//         // let lastData = splitData[splitData.length-1].split('\r')
+//         // splitData.pop()
+//         // splitData.push(lastData[0])
         
-            console.log(splitData)
-    }
-})
+//         //     console.log(splitData)
+//     }
+// })
 
 routes.post('/colection',(req, res) =>{
     
@@ -58,7 +61,24 @@ routes.get('/', (req, res)=>{
 })
 
 routes.get('/download', async(req, res) =>{
-    csv('Test', obj)
+
+    //Gerar arquivo dinamicamente
+// var text = ''
+
+// obj.forEach(element => {
+//     values= Object.values(element)
+
+//     values.forEach(value => {
+//         text =text + ' '+ value
+//         console.log(text)
+//     })
+//     text = text +'\n'
+
+//     console.log(values)
+// })
+
+
+//     await csv('Test-file.txt', text)
 
     console.log('ok')
     res.download('Test.txt', (err)=>{
